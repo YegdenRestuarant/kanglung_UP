@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YEGDEN RESTAURANT</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <button id="home-button" onclick="showHomeView()">Home</button>
+        <h1 id="restaurant-name">YEGDEN RESTAURANT</h1>
+        <div id="owner-container">
+            <button id="owner-button" onclick="toggleOwnerPassword()">Owner</button>
+            <div id="owner-password">
+                <input type="password" id="password-input" placeholder="Enter password">
+                <button onclick="validatePassword()">Submit</button>
+            </div>
+        </div>
+    </header>
+
+    <div id="home-view">
+        <div id="menu-items" class="menu-container"></div>
+    </div>
+
+    <div id="owner-view" style="display:none;">
+        <div id="owner-menu-items" class="menu-container"></div>
+        <input type="text" id="food-name" placeholder="Food Name">
+        <input type="number" id="food-price" placeholder="Price">
+        <input type="file" id="food-image">
+        <button onclick="addMenuItem()">Add Menu Item</button>
+    </div>
+
+    <footer>
+        <p id="quote">"Good food ends with good talk. Delicious food for everyone!"</p>
+        <p id="delivery-message">Free Service delivery from Lower to Upper marker, Kanglung</p>
+        <p id="contact-number">Contact us: 17651798</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
