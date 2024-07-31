@@ -19,7 +19,7 @@ function toggleOwnerPassword() {
 
 function validatePassword() {
     const passwordInput = document.getElementById('password-input').value;
-    if (passwordInput === '12345') {
+    if (passwordInput === '2025') {
         isAuthenticatedOwner = true;
         document.getElementById('owner-password').style.display = 'none';
         showOwnerView();
