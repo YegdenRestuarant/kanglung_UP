@@ -1,80 +1,109 @@
-/* styles.css */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #eaeaea;
+let menuItems = JSON.parse(localStorage.getItem('menuItems')) || [];
+
+document.addEventListener('DOMContentLoaded', () => {
+    displayMenu();
+});
+
+function toggleOwnerPassword() {
+    const ownerPassword = document.getElementById('owner-password');
+    ownerPassword.style.display = ownerPassword.style.display === 'none' || ownerPassword.style.display === '' ? 'block' : 'none';
 }
 
-header {
-    background-color: #333;
-    color: white;
-    padding: 10px 0;
-    text-align: center;
+function validatePassword() {
+    const passwordInput = document.getElementById('password-input').value;
+    if (passwordInput === '2025') {
+        showOwnerView();
+    } else {
+        alert('Incorrect password. Please try again.');
+        document.getElementById('password-input').value = '';
+    }
 }
 
-header h1 {
-    margin: 0;
-    font-size: 2rem;
-    color: #ffc107;
+function showHomeView() {
+    document.getElementById('owner-view').style.display = 'none';
+    document.getElementById('home-view').style.display = 'block';
+    displayMenu();
 }
 
-.header-container {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 10px;
+function showOwnerView() {
+    document.getElementById('home-view').style.display = 'none';
+    document.getElementById('owner-view').style.display = 'block';
+    displayOwnerMenu();
 }
 
-header button {
-    background-color: #444;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
+function displayMenu() {
+    const menuContainer = document.getElementById('menu-items');
+    menuContainer.innerHTML = '';
+
+    menuItems.forEach(item => {
+        const menuItem = document.createElement('div');
+        menuItem.className = 'menu-item';
+        menuItem.innerHTML = `
+            <img src="${item.image || 'default-image.jpg'}" alt="${item.name}">
+            <h3>${item.name}</h3>
+            <p>Nu. ${item.price}</p>
+            <p>${item.available ? 'Available' : 'Not Available'}</p>
+            <button onclick="deleteMenuItem(${item.id})">Delete</button>
+        `;
+        menuContainer.appendChild(menuItem);
+    });
 }
 
-header button:hover {
-    background-color: #555;
+function displayOwnerMenu() {
+    const ownerMenuContainer = document.getElementById('owner-menu-items');
+    ownerMenuContainer.innerHTML = '';
+
+    menuItems.forEach(item => {
+        const ownerMenuItem = document.createElement('div');
+        ownerMenuItem.className = 'owner-menu-item';
+        ownerMenuItem.innerHTML = `
+            <img src="${item.image || 'default-image.jpg'}" alt="${item.name}">
+            <h3>${item.name}</h3>
+            <p>Nu. ${item.price}</p>
+            <button onclick="toggleAvailability(${item.id})">${item.available ? 'Not Available' : 'Available'}</button>
+            <button onclick="deleteMenuItem(${item.id})">Delete</button>
+        `;
+        ownerMenuContainer.appendChild(ownerMenuItem);
+    });
 }
 
-#owner-password {
-    margin-top: 10px;
+function addMenuItem() {
+    const foodName = document.getElementById('food-name').value;
+    const foodPrice = document.getElementById('food-price').value;
+    const foodImage = document.getElementById('food-image').files[0];
+
+    if (foodName && foodPrice && foodImage) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            const newItem = {
+                id: menuItems.length ? menuItems[menuItems.length - 1].id + 1 : 1,
+                name: foodName,
+                price: parseFloat(foodPrice),
+                image: e.target.result,
+                available: true
+            };
+            menuItems.push(newItem);
+            localStorage.setItem('menuItems', JSON.stringify(menuItems));
+            displayMenu();
+            displayOwnerMenu(); // Update owner view as well
+        };
+        reader.readAsDataURL(foodImage);
+    } else {
+        alert('Please fill in all fields.');
+    }
 }
 
-main {
-    padding: 20px;
-    text-align: center;
+function deleteMenuItem(id) {
+    menuItems = menuItems.filter(item => item.id !== id);
+    localStorage.setItem('menuItems', JSON.stringify(menuItems));
+    displayMenu();
+    displayOwnerMenu(); // Update owner view as well
 }
 
-#menu-items, #owner-menu-items {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 20px;
-}
-
-.menu-item, .owner-menu-item {
-    background-color: white;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    width: 200px;
-}
-
-.menu-item img, .owner-menu-item img {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-}
-
-footer {
-    background-color: #333;
-    color: white;
-    text-align: center;
-    padding: 10px 0;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
+function toggleAvailability(id) {
+    const menuItem = menuItems.find(item => item.id === id);
+    menuItem.available = !menuItem.available;
+    localStorage.setItem('menuItems', JSON.stringify(menuItems));
+    displayMenu();
+    displayOwnerMenu(); // Update owner view as well
 }
