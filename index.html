@@ -4,54 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YEGDEN RESTAURANT</title>
-    <link rel="manifest" href="/manifest.json">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
-        <button id="home-button" onclick="showHomeView()">Home</button>
-        <h1 id="restaurant-name">YEGDEN RESTAURANT</h1>
-        <div id="owner-container">
+        <h1>YEGDEN RESTAURANT</h1>
+        <div class="header-container">
+            <button id="home-button" onclick="showHomeView()">Home</button>
             <button id="owner-button" onclick="toggleOwnerPassword()">Owner</button>
-            <div id="owner-password">
+            <div id="owner-password" style="display: none;">
                 <input type="password" id="password-input" placeholder="Enter password">
                 <button onclick="validatePassword()">Submit</button>
             </div>
         </div>
     </header>
 
-    <div id="home-view">
-        <div id="menu-items" class="menu-container"></div>
-    </div>
+    <main>
+        <!-- Home View -->
+        <div id="home-view">
+            <div id="menu-items"></div>
+        </div>
 
-    <div id="owner-view" style="display:none;">
-        <div id="owner-menu-items" class="menu-container"></div>
-        <input type="text" id="food-name" placeholder="Food Name">
-        <input type="number" id="food-price" placeholder="Price">
-        <input type="file" id="food-image">
-        <button onclick="addMenuItem()">Add Menu Item</button>
-    </div>
+        <!-- Owner View -->
+        <div id="owner-view" style="display: none;">
+            <h2>Manage Menu</h2>
+            <div id="owner-menu-items"></div>
+            <h3>Add New Menu Item</h3>
+            <input type="text" id="food-name" placeholder="Food Name">
+            <input type="number" id="food-price" placeholder="Price">
+            <input type="file" id="food-image">
+            <button onclick="addMenuItem()">Add Item</button>
+        </div>
+    </main>
 
     <footer>
-        <p id="quote">"Good food ends with good talk. Delicious food for everyone!"</p>
-        <p id="delivery-message">Free Service delivery from Lower to Upper marker, Kanglung</p>
-        <p id="contact-number">Contact us: 17651798</p>
+        <p>Free Service delivery from Lower to Upper market. Contact us 17651798</p>
     </footer>
 
     <script src="script.js"></script>
 </body>
-    <script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/sw.js')
-        .then((registration) => {
-          console.log('Service Worker registered with scope:', registration.scope);
-        })
-        .catch((error) => {
-          console.log('Service Worker registration failed:', error);
-        });
-    });
-  }
-</script>
-
 </html>
